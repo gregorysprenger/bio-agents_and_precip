@@ -202,9 +202,9 @@ def fetch_and_transform(api_key='', start=0, end=66):
             line = line.strip().replace(" ", "_")
             filenames.append(line + ".tsv")
 
-    data_list = []
-
     for i in filenames:
+        data_list = []
+
         file = os.path.join(local_inpath, i)
         if os.path.isfile(file):
             with open(file) as f:
@@ -223,26 +223,26 @@ def fetch_and_transform(api_key='', start=0, end=66):
                         args=(filename, biosample, data_list, regions, countries),
                     )
 
-    # Create dataframe from data_list
-    df = pd.DataFrame(
-        data_list,
-        columns=[
-            "Biosample",
-            "Agent",
-            "Date",
-            "Country",
-            "region",
-            "Precipitation",
-        ],
-    )
+        # Create dataframe from data_list
+        df = pd.DataFrame(
+            data_list,
+            columns=[
+                "Biosample",
+                "Agent",
+                "Date",
+                "Country",
+                "region",
+                "Precipitation",
+            ],
+        )
 
-    print(f"INFO: Length of df = {len(df)}")
+        print(f"INFO: Length of df = {len(df)}")
 
-    # Write df to local area
-    write_local(df, filename, local_outpath)
+        # Write df to local area
+        write_local(df, filename, local_outpath)
 
-    # Write files in outpath to Google Cloud Storage (GCS)
-    write_gcs(filename, local_outpath, gcs_path)
+        # Write files in outpath to Google Cloud Storage (GCS)
+        write_gcs(filename, local_outpath, gcs_path)
 
 
 if __name__ == "__main__":
