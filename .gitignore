@@ -1,0 +1,6 @@
+*.ipynb
+*.terraform/
+*.hcl
+*.tfstate
+credentials/*.json
+.prefectignore

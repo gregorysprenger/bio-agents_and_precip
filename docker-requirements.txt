@@ -1,0 +1,8 @@
+tqdm==4.65.0
+pandas==1.5.2
+pyarrow==10.0.1
+protobuf==4.21.11
+meteostat==1.6.5
+pandas-gbq==0.18.1
+beautifulsoup4==4.12.1
+prefect-gcp[cloud_storage]==0.2.4
