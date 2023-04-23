@@ -9,11 +9,11 @@ import subprocess
 from prefect import flow
 
 
-def fetch_data():
+def fetch_data(api_key=''):
     script = "run_flow.sh"
 
     process = subprocess.Popen(
-        ["run_flow.sh"],
+        ["run_flow.sh", api_key],
         shell=True,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -22,4 +22,5 @@ def fetch_data():
 
 
 if __name__ == "__main__":
-    fetch_data()
+    api_key = ''
+    fetch_data(api_key)

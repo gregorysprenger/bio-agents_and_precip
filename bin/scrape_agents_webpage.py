@@ -22,7 +22,7 @@ __version__ = "1.0.0"
 
 
 @task(log_prints=True)
-def scrape_agents_webpage(start, end):
+def scrape_agents_webpage(start=1, end=65):
     """
     Entry point of this script.
     """
@@ -76,7 +76,7 @@ def scrape_agents_webpage(start, end):
 
     if start and end:
         with open(outfile, "w") as f:
-            for i in range(start - 1, end):
+            for i in range(start, end):
                 f.write(f"{agent_list[i]}\n")
     else:
         with open(outfile, "w") as f:
@@ -88,5 +88,5 @@ def scrape_agents_webpage(start, end):
 
 if __name__ == "__main__":
     start = 1
-    end = 60
+    end = 65
     scrape_agents_webpage(start, end)

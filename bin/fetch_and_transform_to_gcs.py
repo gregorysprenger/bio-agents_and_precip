@@ -19,7 +19,7 @@ from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
 from meteostat import Monthly, Point, Stations
 from scrape_agents_webpage import scrape_agents_webpage
-from scrape_and_fetch_data import fetch_data
+from fetch_data import fetch_data
 
 
 __author__ = "Gregory Sprenger"
@@ -151,7 +151,7 @@ def write_gcs(filename, local_outpath, gcs_path):
 
 
 @flow(log_prints=True)
-def fetch_and_transform(start, end):
+def fetch_and_transform(api_key='', start=0, end=66):
     """
     Entry point of script that does the processing of input file.
     """
@@ -166,7 +166,7 @@ def fetch_and_transform(start, end):
 
     # Grab data with esearch/efetch
     print("INFO: Fetching data..")
-    fetch_data()
+    fetch_data(api_key)
     print("INFO: Done fetching data.")
 
     # Check if input/output directory exists
@@ -246,6 +246,7 @@ def fetch_and_transform(start, end):
 
 
 if __name__ == "__main__":
+    api_key = ''
     start = 1
     end = 60
-    fetch_and_transform(start, end)
+    fetch_and_transform(api_key, start, end)
