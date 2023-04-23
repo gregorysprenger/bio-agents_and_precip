@@ -6,7 +6,7 @@ from prefect_gcp.cloud_storage import GcsBucket
 
 def create_gcp_block():
     with open(os.path.abspath(os.path.expanduser("./credentials/creds.json"))) as f:
-        credentials = json.load(f)
+        credentials = f.read()
 
     credentials_block = GcpCredentials(service_account_info=credentials)
     credentials_block.save("gcp-agents-creds", overwrite=True)
