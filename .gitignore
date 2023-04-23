@@ -4,3 +4,4 @@
 *.tfstate
 credentials/*.json
 .prefectignore
+bin/__pycache__
