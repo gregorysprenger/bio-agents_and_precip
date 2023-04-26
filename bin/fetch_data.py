@@ -6,21 +6,15 @@ for run_flow.sh to import in deploy.py
 """
 
 import subprocess
-from prefect import flow
 
 
-def fetch_data(api_key=''):
-    script = "run_flow.sh"
-
-    process = subprocess.Popen(
+def fetch_data(api_key):
+    process = subprocess.call(
         ["run_flow.sh", api_key],
         shell=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
     )
-    stdout, stderr = process.communicate()
 
 
 if __name__ == "__main__":
-    api_key = ''
+    api_key = "NULL"
     fetch_data(api_key)

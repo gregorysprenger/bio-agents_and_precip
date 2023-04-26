@@ -8,6 +8,7 @@ obtains weather data, and exports a dataframe.
 import os
 import re
 import sys
+import ssl
 import json
 import pandas as pd
 import concurrent.futures
@@ -133,7 +134,9 @@ def write_local(df, filename, local_outpath):
     """
     Write dataframe to local path as parquet.
     """
-    df.to_parquet(f"{local_outpath}/{filename}.parquet", index=False)
+    df.to_parquet(
+        f"{local_outpath}/{filename}.parquet.gz", compression="gzip", index=False
+    )
     print(f"INFO: Writing {filename} to local path.")
 
 
@@ -144,14 +147,15 @@ def write_gcs(filename, local_outpath, gcs_path):
     """
     gcs_bucket = GcsBucket.load("gcs-agents-precip")
     gcs_bucket.upload_from_path(
-        from_path=f"{local_outpath}/{filename}.parquet",
-        to_path=f"{gcs_path}/{filename}.parquet",
+        from_path=f"{local_outpath}/{filename}.parquet.gz",
+        to_path=f"{gcs_path}/{filename}.parquet.gz",
+        timeout=9000,
     )
     print(f"INFO: Writing {filename} to GCS.")
 
 
 @flow(log_prints=True)
-def fetch_and_transform(api_key='', start=0, end=66):
+def fetch_and_transform(api_key="NULL", start=0, end=66):
     """
     Entry point of script that does the processing of input file.
     """
@@ -160,6 +164,9 @@ def fetch_and_transform(api_key='', start=0, end=66):
     local_inpath = "raw_data"
     local_outpath = "clean_data"
     gcs_path = "data"
+
+    # Monkeypatching -- Discouraged but quick fix to run on GCS
+    ssl._create_default_https_context = ssl._create_unverified_context
 
     # Scrape webpage
     scrape_agents_webpage(start, end)
@@ -246,7 +253,7 @@ def fetch_and_transform(api_key='', start=0, end=66):
 
 
 if __name__ == "__main__":
-    api_key = ''
+    api_key = "NULL"
     start = 1
     end = 60
     fetch_and_transform(api_key, start, end)

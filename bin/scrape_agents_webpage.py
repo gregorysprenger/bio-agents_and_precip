@@ -74,19 +74,14 @@ def scrape_agents_webpage(start=1, end=65):
 
     outfile = "agents_list.txt"
 
-    if start and end:
-        with open(outfile, "w") as f:
-            for i in range(start, end):
-                f.write(f"{agent_list[i]}\n")
-    else:
-        with open(outfile, "w") as f:
-            for line in agent_list:
-                f.write(f"{line}\n")
+    with open(outfile, "w") as f:
+        for i in range(start, end):
+            f.write(f"{agent_list[i]}\n")
 
     print("INFO: Scraping agents webpage complete.")
 
 
 if __name__ == "__main__":
-    start = 1
+    start = 0
     end = 65
     scrape_agents_webpage(start, end)

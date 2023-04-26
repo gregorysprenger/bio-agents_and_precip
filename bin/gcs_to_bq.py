@@ -49,11 +49,15 @@ def transform_data(path, filename):
         print(f"INFO: Transforming {filename}")
         df = pd.read_parquet(path)
 
-        print(f"INFO: PRE - Missing precipitation count: {df['Precipitation'].isna().sum()}")
+        print(
+            f"INFO: PRE - Missing precipitation count: {df['Precipitation'].isna().sum()}"
+        )
 
         df["Precipitation"].fillna(0, inplace=True)
 
-        print(f"INFO: POST - Missing precipitation count: {df['Precipitation'].isna().sum()}")
+        print(
+            f"INFO: POST - Missing precipitation count: {df['Precipitation'].isna().sum()}"
+        )
         return df
     else:
         print(f"INFO: {filename} is empty. Skipping..")
@@ -105,11 +109,11 @@ def gcs_to_bq(start, end):
 
             # Try to catch errors
             if "." in filename:
-                if not filename.endswith(".parquet"):
-                    sys.stderr.write("ERROR: Filename does not end with '.parquet'.")
+                if not filename.endswith(".parquet.gz"):
+                    sys.stderr.write("ERROR: Filename does not end with '.parquet.gz'.")
                     sys.exit(1)
             elif not "." in filename:
-                filename = filename + ".parquet"
+                filename = filename + ".parquet.gz"
 
             # ETL process
             path = extract_from_gcs(filename, local_path, gcs_path)
